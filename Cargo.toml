@@ -1,0 +1,28 @@
+[package]
+name = "sixwm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Smithay é o "motor" do seu WM. 
+# Usamos a versão do Git para garantir compatibilidade com os protocolos mais recentes.
+smithay = { git = "https://github.com/Smithay/smithay.git", rev = "62fab5a", features = [
+    "backend_winit",    # Necessário para rodar em modo janela (seu caso atual)
+    "backend_egl",      # Necessário para aceleração de hardware (GPU)
+    "renderer_gles2",   # O "pintor" que desenha na tela
+    "desktop",          # Habilita gerenciamento de janelas e camadas (Wallpaper/Barra)
+    "wayland_frontend", # Permite que apps Wayland se conectem ao seu WM
+    "use_system_lib"    # Usa as bibliotecas do seu Arch Linux
+] }
+
+# Bibliotecas de suporte essenciais
+wayland-server = "0.31"
+wayland-protocols = { version = "0.31", features = ["staging"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+libc = "0.2"
+xkbcommon = "0.7"
+
+[patch.crates-io]
+# Às vezes necessário para garantir que todos usem a mesma versão das libs de protocolo
+wayland-server = { git = "https://github.com/smithay/wayland-rs", rev = "eb15494" }

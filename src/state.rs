@@ -9,7 +9,7 @@ use smithay::{
         shell::xdg::XdgShellState,
     },
     input::{Seat, SeatState}, 
-    desktop::{Space, Window}, // <--- Window importado aqui
+    desktop::{Space, Window}, 
     utils::Point,
 };
 
@@ -20,12 +20,12 @@ pub struct SixWM {
     pub seat_state: SeatState<SixWM>,
     pub seat: Seat<SixWM>,
     pub display_handle: DisplayHandle,
-    pub space: Space<Window>, // <--- Space agora tipado explicitamente com Window
+    pub space: Space<Window>, // rola agora com espaco
     pub pointer_location: Point<f64, smithay::utils::Logical>,
     pub width: u32,
     pub height: u32,
     
-    // NOVO: Guarda a janela que está sendo arrastada e o ponto inicial (offset) dentro dela
+    //offset) dentro dela
     pub grabbed_window: Option<(Window, Point<f64, smithay::utils::Logical>)>,
 }
 

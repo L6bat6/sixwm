@@ -43,7 +43,7 @@ use smithay::{
             Display, Client, ListeningSocket,
         },
     },
-    // Importante: WaylandFocus permite usar .wl_surface() na janela
+    // Importante: rola
     wayland::{
         seat::WaylandFocus, 
         buffer::BufferHandler,
@@ -56,12 +56,11 @@ use smithay::{
 use std::time::Duration;
 use std::process::Command;
 
-// Configurações
+// Confia
 const TERM_CMD: &str = "foot"; 
 const MENU_CMD: &[&str] = &["bemenu-run", "-p", "Run:"];
 
-// Enum para separar a detecção da tecla da execução da ação
-// Isso evita conflitos de empréstimo (borrow checker)
+/
 enum KeyAction {
     None,
     Quit,
@@ -179,7 +178,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                      let state_btn = event.state();
                      let modifiers = state.seat.get_keyboard().unwrap().modifier_state();
 
-                     // Botão Esquerdo (272) + Alt = Mover Janela
+                     // + Alt = Mover Janela
                      if button == 272 && state_btn == ButtonState::Pressed {
                         let pos = state.pointer_location;
                         if let Some((window, loc)) = state.space.element_under(pos).map(|(w, l)| (w.clone(), l)) {
@@ -202,7 +201,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     let key_code = event.key_code();
                     let key_state = event.state();
 
-                    // Passo 1: Detectar a ação (retorna o enum KeyAction)
+                    // (retorna o enum KeyAction)
                     let action = keyboard.input(state, key_code, key_state, serial, time as u32, |_, modifiers, handle| {
                         if key_state == smithay::backend::input::KeyState::Pressed && modifiers.alt {
                             let sym = handle.raw_syms().get(0).cloned().unwrap_or(Keysym::from(0));
@@ -218,7 +217,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         }
                     });
 
-                    // Passo 2: Executar a ação
+                
                     match action {
                         Some(KeyAction::Quit) => std::process::exit(0),
                         Some(KeyAction::Run(cmd)) => { Command::new(cmd).spawn().ok(); },
@@ -249,7 +248,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         {
             let (renderer, mut target) = backend.bind().unwrap();
             
-            // AQUI ESTAVA O ERRO DE TIPO: Adicionamos o cast explícito no argumento de elementos customizados
+            // rola
             render_output(
                 &output,
                 renderer,
@@ -257,7 +256,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 1.0, 
                 0,
                 [&state.space],
-                &[] as &[WaylandSurfaceRenderElement<GlesRenderer>], // <--- A CORREÇÃO MÁGICA
+                &[] as &[WaylandSurfaceRenderElement<GlesRenderer>], // rola q agora funciona
                 &mut damage_tracker,
                 [0.1, 0.1, 0.1, 1.0]
             ).unwrap();
